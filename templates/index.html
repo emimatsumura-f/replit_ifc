@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Upload IFC File</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" id="uploadForm">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Select IFC File</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".ifc" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" id="uploadBtn">
+                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            Upload and Process
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4 class="mb-0">Instructions</h4>
+            </div>
+            <div class="card-body">
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">Select an IFC file using the upload form above</li>
+                    <li class="list-group-item">Click "Upload and Process" to analyze the file</li>
+                    <li class="list-group-item">The system will extract material information including:
+                        <ul>
+                            <li>Section properties</li>
+                            <li>Weight</li>
+                            <li>Length</li>
+                            <li>Quantities</li>
+                        </ul>
+                    </li>
+                    <li class="list-group-item">A CSV file will be automatically downloaded with the results</li>
+                    <li class="list-group-item">View processing history in the History tab</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

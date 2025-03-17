@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="mb-0">Processing History</h4>
+    </div>
+    <div class="card-body">
+        {% if uploads %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Processed Date</th>
+                        <th>Elements Processed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for upload in uploads %}
+                    <tr>
+                        <td>{{ upload.filename }}</td>
+                        <td>{{ upload.processed_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ upload.element_count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            No files have been processed yet.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
