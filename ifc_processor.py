@@ -17,43 +17,44 @@ def process_ifc_file(filepath):
                 # プロパティの抽出
                 properties = {
                     "type": element.is_a(),  # 部材の種類
-                    "size": get_size(element),  # サイズ情報
+                    "size": get_section_profile(element),  # 断面性能情報
                     "weight": get_weight(element),  # 重量情報
                     "length": get_length(element),  # 長さ情報
-                    "quantity": 1  # デフォルトの数量
                 }
                 elements.append(properties)
             except Exception as e:
                 logger.warning(f"部材 {element.id()} の処理中にエラーが発生: {str(e)}")
                 continue
 
-        # 同じ種類の部材をグループ化して数量を集計
-        grouped_elements = {}
-        for element in elements:
-            key = (element["type"], element["size"])
-            if key in grouped_elements:
-                grouped_elements[key]["quantity"] += 1
-            else:
-                grouped_elements[key] = element
-
-        return list(grouped_elements.values())
+        return elements
 
     except Exception as e:
         logger.error(f"IFCファイルの処理中にエラーが発生: {str(e)}")
         raise
 
-def get_size(element):
-    """部材のサイズ情報を抽出"""
+def get_section_profile(element):
+    """部材の断面性能情報を抽出"""
     try:
-        # プロパティセットから情報を取得
-        psets = element.IsDefinedBy
-        for definition in psets:
-            if definition.is_a("IfcRelDefinesByProperties"):
-                props = definition.RelatingPropertyDefinition
-                if props.is_a("IfcPropertySet"):
-                    for prop in props.HasProperties:
-                        if "Section" in prop.Name or "Profile" in prop.Name:
-                            return prop.NominalValue.wrappedValue
+        # 断面形状の情報を取得
+        for rel in element.IsDefinedBy:
+            if rel.is_a("IfcRelDefinesByProperties"):
+                property_set = rel.RelatingPropertyDefinition
+                if property_set.is_a("IfcPropertySet"):
+                    for prop in property_set.HasProperties:
+                        # 断面性能に関連する property を検索
+                        if any(keyword in prop.Name.lower() for keyword in ["section", "profile", "size"]):
+                            if hasattr(prop, "NominalValue"):
+                                return prop.NominalValue.wrappedValue
+
+        # 材料プロファイルから情報を取得
+        for rel in element.HasAssociations:
+            if rel.is_a("IfcRelAssociatesMaterial"):
+                material = rel.RelatingMaterial
+                if material.is_a("IfcMaterialProfileSet"):
+                    for profile in material.MaterialProfiles:
+                        if profile.Profile:
+                            return profile.Profile.ProfileName
+
         return "未定義"
     except:
         return "未定義"

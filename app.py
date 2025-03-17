@@ -26,7 +26,7 @@ app.secret_key = "your-secret-key-here"
 # データベース設定
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///ifc_converter.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 最大ファイルサイズ: 16MB
+app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024  # 最大ファイルサイズ: 100MB
 app.config["UPLOAD_FOLDER"] = tempfile.gettempdir()
 
 # LoginManagerの設定
