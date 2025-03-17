@@ -166,3 +166,30 @@ body {
         padding: 0.75rem 1rem;
     }
 }
+
+/* プログレスバーのスタイル */
+.progress {
+    height: 0.5rem;
+    background-color: var(--tekla-light-blue);
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background-color: var(--tekla-blue);
+    transition: width 0.2s ease;
+    color: white;
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 0.5rem;
+}
+
+/* アップロードボタンのスタイル調整 */
+.btn-primary.disabled, .btn-primary:disabled {
+    background-color: var(--tekla-blue);
+    opacity: 0.65;
+}
+
+.spinner-border {
+    margin-right: 0.5rem;
+}
