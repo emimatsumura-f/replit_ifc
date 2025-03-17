@@ -1,6 +1,6 @@
 import os
-import logging
 import json
+import logging
 from datetime import datetime
 from flask import Flask, render_template, request, send_file, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -20,10 +20,10 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
-app.secret_key = os.environ.get("SESSION_SECRET", "dev_secret_key")
+app.secret_key = os.environ.get("SESSION_SECRET")
 
-# SQLiteデータベースの設定
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///ifc_converter.db"
+# データベース設定
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///ifc_converter.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 最大ファイルサイズ: 16MB
 app.config["UPLOAD_FOLDER"] = tempfile.gettempdir()
@@ -45,6 +45,7 @@ from forms import LoginForm, RegistrationForm
 
 @login_manager.user_loader
 def load_user(id):
+    logger.debug(f"Loading user with ID: {id}")
     return User.query.get(int(id))
 
 def allowed_file(filename):
@@ -59,28 +60,48 @@ def index():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for("index"))
+
     form = LoginForm()
     if form.validate_on_submit():
+        logger.debug(f"Login attempt for email: {form.email.data}")
         user = User.query.filter_by(email=form.email.data).first()
-        if user is None or not user.check_password(form.password.data):
+
+        if user is None:
+            logger.debug("User not found")
             flash("メールアドレスまたはパスワードが正しくありません", "error")
             return redirect(url_for("login"))
+
+        if not user.check_password(form.password.data):
+            logger.debug("Invalid password")
+            flash("メールアドレスまたはパスワードが正しくありません", "error")
+            return redirect(url_for("login"))
+
+        logger.debug(f"Successful login for user: {user.username}")
         login_user(user)
         return redirect(url_for("index"))
+
     return render_template("login.html", form=form)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for("index"))
+
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash("登録が完了しました。ログインしてください。", "success")
-        return redirect(url_for("login"))
+        try:
+            user = User(username=form.username.data, email=form.email.data)
+            user.set_password(form.password.data)
+            logger.debug(f"Creating new user: {user.username}, {user.email}")
+            db.session.add(user)
+            db.session.commit()
+            flash("登録が完了しました。ログインしてください。", "success")
+            return redirect(url_for("login"))
+        except Exception as e:
+            logger.error(f"Error during user registration: {str(e)}")
+            db.session.rollback()
+            flash("登録中にエラーが発生しました。", "error")
+
     return render_template("register.html", form=form)
 
 @app.route("/logout")
@@ -180,4 +201,8 @@ def history():
     return render_template("history.html", uploads=uploads)
 
 with app.app_context():
+    # データベースを再作成
+    logger.info("Recreating database tables...")
+    db.drop_all()
     db.create_all()
+    logger.info("Database tables created successfully")
