@@ -20,7 +20,8 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
-app.secret_key = os.environ.get("SESSION_SECRET")
+# セッション管理のための固定キーを設定
+app.secret_key = "your-secret-key-here"
 
 # データベース設定
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///ifc_converter.db")
@@ -46,7 +47,9 @@ from forms import LoginForm, RegistrationForm
 @login_manager.user_loader
 def load_user(id):
     logger.debug(f"Loading user with ID: {id}")
-    return User.query.get(int(id))
+    user = User.query.get(int(id))
+    logger.debug(f"User found: {user is not None}")
+    return user
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -78,6 +81,7 @@ def login():
 
         logger.debug(f"Successful login for user: {user.username}")
         login_user(user)
+        flash("ログインしました", "success")
         return redirect(url_for("index"))
 
     return render_template("login.html", form=form)
@@ -90,11 +94,12 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         try:
+            logger.debug(f"Attempting to register new user: {form.username.data}, {form.email.data}")
             user = User(username=form.username.data, email=form.email.data)
             user.set_password(form.password.data)
-            logger.debug(f"Creating new user: {user.username}, {user.email}")
             db.session.add(user)
             db.session.commit()
+            logger.debug(f"Successfully registered user: {user.username}")
             flash("登録が完了しました。ログインしてください。", "success")
             return redirect(url_for("login"))
         except Exception as e:
@@ -107,7 +112,8 @@ def register():
 @app.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for("index"))
+    flash("ログアウトしました", "success")
+    return redirect(url_for("login"))
 
 @app.route("/upload", methods=["POST"])
 @login_required
