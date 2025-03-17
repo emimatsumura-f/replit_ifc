@@ -1,33 +1,33 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Feather icons
+    // Featherアイコンの初期化
     feather.replace();
 
-    // Handle file upload form submission
+    // ファイルアップロードフォームの処理
     const uploadForm = document.getElementById('uploadForm');
     const uploadBtn = document.getElementById('uploadBtn');
     const spinner = uploadBtn.querySelector('.spinner-border');
 
     if (uploadForm) {
         uploadForm.addEventListener('submit', function() {
-            // Disable button and show spinner
+            // ボタンを無効化してスピナーを表示
             uploadBtn.disabled = true;
             spinner.classList.remove('d-none');
-            uploadBtn.textContent = ' Processing...';
+            uploadBtn.textContent = ' 処理中...';
             spinner.parentNode.insertBefore(spinner, uploadBtn.firstChild);
         });
     }
 
-    // File input validation
+    // ファイル入力のバリデーション
     const fileInput = document.getElementById('file');
     if (fileInput) {
         fileInput.addEventListener('change', function() {
             const file = this.files[0];
             if (file) {
                 if (!file.name.toLowerCase().endsWith('.ifc')) {
-                    alert('Please select an IFC file');
+                    alert('IFCファイルを選択してください');
                     this.value = '';
                 } else if (file.size > 16 * 1024 * 1024) { // 16MB
-                    alert('File size must be less than 16MB');
+                    alert('ファイルサイズは16MB以下にしてください');
                     this.value = '';
                 }
             }

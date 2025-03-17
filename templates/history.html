@@ -3,7 +3,7 @@
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h4 class="mb-0">Processing History</h4>
+        <h4 class="mb-0">変換履歴</h4>
     </div>
     <div class="card-body">
         {% if uploads %}
@@ -11,16 +11,16 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Filename</th>
-                        <th>Processed Date</th>
-                        <th>Elements Processed</th>
+                        <th>ファイル名</th>
+                        <th>処理日時</th>
+                        <th>処理した部材数</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for upload in uploads %}
                     <tr>
                         <td>{{ upload.filename }}</td>
-                        <td>{{ upload.processed_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ upload.processed_date.strftime('%Y年%m月%d日 %H:%M:%S') }}</td>
                         <td>{{ upload.element_count }}</td>
                     </tr>
                     {% endfor %}
@@ -29,7 +29,7 @@
         </div>
         {% else %}
         <div class="alert alert-info">
-            No files have been processed yet.
+            まだファイルが処理されていません。
         </div>
         {% endif %}
     </div>
