@@ -1,49 +1,110 @@
 /* Custom styles to complement Bootstrap dark theme */
+/* カスタムカラーの定義 */
+:root {
+    --custom-blue: #2196F3;
+    --custom-light-blue: #E3F2FD;
+    --custom-gray: #F5F5F5;
+    --custom-white: #FFFFFF;
+}
+
 body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: var(--custom-gray);
 }
 
-.footer {
-    margin-top: auto;
+/* ナビゲーションバーのスタイル */
+.navbar {
+    background-color: var(--custom-blue) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.navbar-brand {
+    font-size: 2rem;  /* タイトルを大きく */
+    font-weight: 800; /* タイトルを太く */
+    letter-spacing: 1px; /* 文字間隔を広げる */
+    color: var(--custom-white) !important;
+}
+
+.nav-link {
+    color: var(--custom-white) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: opacity 0.3s;
+}
+
+.nav-link:hover {
+    opacity: 0.8;
+}
+
+/* カードのスタイル */
 .card {
-    border: 1px solid var(--bs-border-color);
-    background-color: var(--bs-dark);
+    background-color: var(--custom-white);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: var(--custom-light-blue);
+    border-bottom: none;
+    padding: 1rem;
+}
+
+/* テーブルのスタイル */
+.table {
+    background-color: var(--custom-white);
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background-color: var(--custom-light-blue);
+    border-bottom: none;
+    color: #333;
+    font-weight: 600;
+    padding: 1rem;
+}
+
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--custom-gray);
+}
+
+/* フォームのスタイル */
+.form-control {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 0.75rem;
 }
 
 .form-control:focus {
-    border-color: var(--bs-primary);
-    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+    border-color: var(--custom-blue);
+    box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
 }
 
-/* Custom spinner colors */
-.spinner-border {
-    color: var(--bs-light);
+/* ボタンのスタイル */
+.btn-primary {
+    background-color: var(--custom-blue);
+    border-color: var(--custom-blue);
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    border-radius: 6px;
 }
 
-/* Table hover effect */
-.table-hover tbody tr:hover {
-    background-color: rgba(var(--bs-primary-rgb), 0.1);
+.btn-primary:hover {
+    background-color: #1976D2;
+    border-color: #1976D2;
 }
 
-/* List group custom styles */
-.list-group-item {
-    background-color: var(--bs-dark);
-    border-color: var(--bs-border-color);
-}
-
-/* Alert custom styles */
+/* アラートのスタイル */
 .alert {
-    border-width: 2px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 1.5rem;
 }
