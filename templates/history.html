@@ -13,13 +13,19 @@
                     <tr>
                         <th>ファイル名</th>
                         <th>処理日時</th>
+                        <th>要素数</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for upload in uploads %}
                     <tr>
-                        <td>{{ upload.filename }}</td>
+                        <td>
+                            <a href="{{ url_for('preview', upload_id=upload.id) }}" class="text-decoration-none">
+                                {{ upload.filename }}
+                            </a>
+                        </td>
                         <td>{{ upload.processed_date.strftime('%Y年%m月%d日 %H:%M:%S') }}</td>
+                        <td>{{ upload.element_count }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
