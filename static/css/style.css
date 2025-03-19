@@ -1,6 +1,6 @@
 /* モダンなデザインのためのカスタムスタイル */
 :root {
-    --tekla-blue: #0063B0;
+    --tekla-blue: #0d6efd;  /* Bootstrap primary blue */
     --tekla-light-blue: #E8F3FF;
     --tekla-gray: #F7F9FA;
     --tekla-text: #2C2C2C;
@@ -79,9 +79,11 @@ body {
 
 /* テーブルのスタイル */
 .table-container {
-    max-height: 500px;
+    max-height: 70vh; /* ビューポートの70%の高さ */
     overflow-y: auto;
     position: relative;
+    border-radius: 8px;
+    background: white;
 }
 
 .table {
@@ -104,12 +106,14 @@ body {
     border-bottom: none;
     position: sticky;
     top: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .table tbody td {
     padding: 1rem 1.5rem;
     color: var(--tekla-text);
     border-top: 1px solid var(--tekla-border);
+    background: white;
 }
 
 .table-hover tbody tr:hover {
@@ -126,7 +130,7 @@ body {
 
 .form-control:focus {
     border-color: var(--tekla-blue);
-    box-shadow: 0 0 0 3px rgba(0, 99, 176, 0.15);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
 }
 
 /* ボタンスタイル */
@@ -140,47 +144,9 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #005291;
-    border-color: #005291;
+    background-color: #0b5ed7;
+    border-color: #0b5ed7;
     transform: translateY(-1px);
-}
-
-/* アラートのスタイル */
-.alert {
-    border: none;
-    border-radius: 8px;
-    padding: 1rem 1.5rem;
-    margin-bottom: 1.5rem;
-    font-weight: 500;
-}
-
-.alert-danger {
-    background-color: #FFF2F2;
-    color: #DC2626;
-}
-
-.alert-success {
-    background-color: #F0FDF4;
-    color: #16A34A;
-}
-
-/* レスポンシブ調整 */
-@media (max-width: 768px) {
-    .navbar-brand {
-        font-size: 1.5rem;
-    }
-
-    .container {
-        padding: 1rem;
-    }
-
-    .card-header, .card-body {
-        padding: 1rem;
-    }
-
-    .table thead th, .table tbody td {
-        padding: 0.75rem 1rem;
-    }
 }
 
 /* プログレスバーのスタイル */
