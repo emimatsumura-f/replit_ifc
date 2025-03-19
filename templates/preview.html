@@ -14,6 +14,7 @@
                 <thead>
                     <tr>
                         <th>部材種別</th>
+                        <th>部材名</th>
                         <th>断面性能</th>
                         <th>重量</th>
                         <th>長さ</th>
@@ -23,6 +24,7 @@
                     {% for element in elements %}
                     <tr>
                         <td>{{ element.type }}</td>
+                        <td>{{ element.name }}</td>
                         <td>{{ element.size }}</td>
                         <td>{{ element.weight }}</td>
                         <td>{{ element.length }}</td>

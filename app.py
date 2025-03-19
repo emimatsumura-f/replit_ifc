@@ -183,14 +183,14 @@ def download_csv(upload_id):
 
     with open(csv_path, 'w', newline='', encoding='utf-8-sig') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(["部材種別", "サイズ", "重量", "長さ", "数量"])
+        writer.writerow(["部材種別", "部材名", "断面性能", "重量", "長さ"])
         for element in elements:
             writer.writerow([
                 element["type"],
+                element["name"],
                 element["size"],
                 element["weight"],
-                element["length"],
-                element["quantity"]
+                element["length"]
             ])
 
     return send_file(

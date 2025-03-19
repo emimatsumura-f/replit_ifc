@@ -11,19 +11,40 @@ def process_ifc_file(filepath):
         ifc_file = ifcopenshell.open(filepath)
         elements = []
 
-        # 建築部材の処理
-        for element in ifc_file.by_type("IfcBuildingElement"):
+        # BeamとColumnの要素を取得
+        beams = ifc_file.by_type('IfcBeam')
+        columns = ifc_file.by_type('IfcColumn')
+
+        # Beamの情報を処理
+        for beam in beams:
             try:
-                # プロパティの抽出
                 properties = {
-                    "type": element.is_a(),  # 部材の種類
-                    "size": get_section_profile(element),  # 断面性能情報
-                    "weight": get_weight(element),  # 重量情報
-                    "length": get_length(element),  # 長さ情報
+                    "type": "IfcBeam",
+                    "name": beam.Name if hasattr(beam, 'Name') else "未定義",
+                    "description": beam.Description if hasattr(beam, 'Description') else "未定義",
+                    "size": extract_profile_information(beam),
+                    "weight": get_weight(beam),
+                    "length": get_length(beam)
                 }
                 elements.append(properties)
             except Exception as e:
-                logger.warning(f"部材 {element.id()} の処理中にエラーが発生: {str(e)}")
+                logger.warning(f"Beam {beam.id()} の処理中にエラーが発生: {str(e)}")
+                continue
+
+        # Columnの情報を処理
+        for column in columns:
+            try:
+                properties = {
+                    "type": "IfcColumn",
+                    "name": column.Name if hasattr(column, 'Name') else "未定義",
+                    "description": column.Description if hasattr(column, 'Description') else "未定義",
+                    "size": extract_profile_information(column),
+                    "weight": get_weight(column),
+                    "length": get_length(column)
+                }
+                elements.append(properties)
+            except Exception as e:
+                logger.warning(f"Column {column.id()} の処理中にエラーが発生: {str(e)}")
                 continue
 
         return elements
@@ -32,16 +53,20 @@ def process_ifc_file(filepath):
         logger.error(f"IFCファイルの処理中にエラーが発生: {str(e)}")
         raise
 
-def get_section_profile(element):
-    """部材の断面性能情報を抽出"""
+def extract_profile_information(element):
+    """部材のプロファイル情報を抽出"""
     try:
-        # 断面形状の情報を取得
+        # まず、Description属性をチェック
+        if hasattr(element, 'Description') and element.Description:
+            return element.Description
+
+        # PropertySetから情報を取得
         for rel in element.IsDefinedBy:
             if rel.is_a("IfcRelDefinesByProperties"):
                 property_set = rel.RelatingPropertyDefinition
                 if property_set.is_a("IfcPropertySet"):
                     for prop in property_set.HasProperties:
-                        # 断面性能に関連する property を検索
+                        # 断面性能に関連するpropertyを検索
                         if any(keyword in prop.Name.lower() for keyword in ["section", "profile", "size"]):
                             if hasattr(prop, "NominalValue"):
                                 return prop.NominalValue.wrappedValue
