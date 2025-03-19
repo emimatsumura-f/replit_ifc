@@ -8,6 +8,10 @@ class Config:
     SECRET_KEY = os.environ.get('SESSION_SECRET', 'dev')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', f"sqlite:///{DATABASE_PATH}")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_recycle": 300,
+        "pool_pre_ping": True,
+    }
     MAX_CONTENT_LENGTH = 100 * 1024 * 1024  # 100MB
     UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
 
