@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">解析結果プレビュー</h4>
+        <form action="{{ url_for('ifc.download_csv', upload_id=upload.id) }}" method="get">
+            <button type="submit" class="btn btn-primary">CSVダウンロード</button>
+        </form>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-container">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>部材種別</th>
+                        <th>部材名</th>
+                        <th>断面性能</th>
+                        <th>重量</th>
+                        <th>長さ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for element in elements %}
+                    <tr>
+                        <td>{{ element.type }}</td>
+                        <td>{{ element.name }}</td>
+                        <td>{{ element.size }}</td>
+                        <td>{{ element.weight }}</td>
+                        <td>{{ element.length }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-body">
+        <form action="{{ url_for('ifc.upload_file') }}" method="post" enctype="multipart/form-data" id="uploadForm">
+            <div class="mb-3">
+                <label for="file" class="form-label">新しいIFCファイルを選択してください</label>
+                <input type="file" class="form-control" id="file" name="file" accept=".ifc" required>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary" id="uploadBtn">
+                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    新規作成
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
