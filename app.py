@@ -21,10 +21,12 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 # セッション管理のための固定キーを設定
-app.secret_key = "your-secret-key-here"
+app.secret_key = os.environ.get("SESSION_SECRET", "your-secret-key-here")
 
 # データベース設定
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///ifc_converter.db")
+db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance', 'ifc_converter.db')
+os.makedirs(os.path.dirname(db_path), exist_ok=True)
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024  # 最大ファイルサイズ: 100MB
 app.config["UPLOAD_FOLDER"] = tempfile.gettempdir()
@@ -207,8 +209,7 @@ def history():
     return render_template("history.html", uploads=uploads)
 
 with app.app_context():
-    # データベースを再作成
-    logger.info("Recreating database tables...")
-    db.drop_all()
+    # データベースのテーブルが存在しない場合のみ作成
+    logger.info("Creating database tables if they don't exist...")
     db.create_all()
-    logger.info("Database tables created successfully")
+    logger.info("Database initialization completed")
