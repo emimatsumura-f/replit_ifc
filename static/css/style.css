@@ -7,27 +7,27 @@
     --tekla-border: #E5E9EB;
 }
 
+/* Base styles */
 body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: var(--tekla-gray);
+    background-color: #f8f9fa; /* Updated body background */
     color: var(--tekla-text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* ナビゲーションバーのスタイル */
+/* Navigation styles */
 .navbar {
-    background-color: var(--tekla-blue) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 1rem 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1); /* Updated navbar box-shadow */
+    padding: 1rem 0; /*Preserved from original*/
 }
 
 .navbar-brand {
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    color: white !important;
+    font-size: 1.5rem; /*Updated font size*/
+    font-weight: 600; /*Updated font weight*/
+    letter-spacing: 0.5px; /*Preserved from original*/
+    color: white !important; /*Preserved from original*/
 }
 
 .navbar .nav-link {
@@ -42,6 +42,7 @@ body {
     color: white !important;
 }
 
+
 /* メインコンテンツエリア */
 .container {
     padding: 2rem 1rem;
@@ -51,8 +52,8 @@ body {
 .card {
     background: white;
     border: none;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border-radius: .25rem; /* Updated border-radius */
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075); /* Updated box-shadow */
     margin-bottom: 1.5rem;
     transition: box-shadow 0.2s ease;
 }
@@ -63,7 +64,7 @@ body {
 
 .card-header {
     background-color: white;
-    border-bottom: 1px solid var(--tekla-border);
+    border-bottom: 1px solid #dee2e6; /* Updated border-bottom color */
     padding: 1.25rem 1.5rem;
 }
 
@@ -77,35 +78,44 @@ body {
     padding: 1.5rem;
 }
 
+.card-body.p-0 {
+    max-height: calc(100vh - 200px);
+    overflow: hidden;
+}
+
+
 /* テーブルのスタイル */
 .table-container {
-    max-height: 70vh; /* ビューポートの70%の高さ */
+    height: calc(100vh - 400px); /* ビューポートの高さから余白を引いた固定高さ */
+    min-height: 300px;
     overflow-y: auto;
-    position: relative;
-    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
     background: white;
+    margin-bottom: 1rem;
 }
 
 .table {
-    margin: 0;
+    margin-bottom: 0;
     position: relative;
 }
 
 .table thead {
     position: sticky;
     top: 0;
-    z-index: 1;
-    background-color: var(--tekla-light-blue);
+    z-index: 2;
+    background-color: #f8f9fa;
 }
 
 .table thead th {
-    background-color: var(--tekla-light-blue);
+    background-color: #f8f9fa;
     color: var(--tekla-text);
     font-weight: 600;
     padding: 1rem 1.5rem;
-    border-bottom: none;
+    border-bottom: 2px solid #dee2e6;
     position: sticky;
     top: 0;
+    z-index: 2;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
@@ -117,20 +127,20 @@ body {
 }
 
 .table-hover tbody tr:hover {
-    background-color: var(--tekla-gray);
+    background-color: rgba(0,0,0,.075);
 }
 
 /* フォームコントロール */
 .form-control {
     border: 1px solid var(--tekla-border);
-    border-radius: 6px;
+    border-radius: .25rem; /* Updated border-radius */
     padding: 0.75rem 1rem;
     font-size: 0.95rem;
 }
 
 .form-control:focus {
-    border-color: var(--tekla-blue);
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+    border-color: #0d6efd; /* Updated border color */
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25); /* Updated box-shadow */
 }
 
 /* ボタンスタイル */
@@ -139,7 +149,7 @@ body {
     border-color: var(--tekla-blue);
     padding: 0.75rem 1.5rem;
     font-weight: 500;
-    border-radius: 6px;
+    border-radius: .25rem; /*Updated border-radius*/
     transition: all 0.2s ease;
 }
 
@@ -152,13 +162,13 @@ body {
 /* プログレスバーのスタイル */
 .progress {
     height: 0.5rem;
-    background-color: var(--tekla-light-blue);
+    background-color: #e9ecef; /* Updated background color */
     border-radius: 0.25rem;
     overflow: hidden;
 }
 
 .progress-bar {
-    background-color: var(--tekla-blue);
+    background-color: #0d6efd; /* Updated background color */
     transition: width 0.2s ease;
     color: white;
     text-align: center;
@@ -173,5 +183,7 @@ body {
 }
 
 .spinner-border {
-    margin-right: 0.5rem;
+    width: 1rem;
+    height: 1rem;
+    margin-right: .5rem;
 }
