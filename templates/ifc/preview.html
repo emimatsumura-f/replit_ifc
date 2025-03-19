@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="card preview-card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h4 class="mb-0">解析結果プレビュー</h4>
-        <form action="{{ url_for('ifc.download_csv', upload_id=upload.id) }}" method="get">
-            <button type="submit" class="btn btn-primary">CSVダウンロード</button>
-        </form>
+<div class="preview-card">
+    <div class="preview-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">解析結果プレビュー</h4>
+            <form action="{{ url_for('ifc.download_csv', upload_id=upload.id) }}" method="get">
+                <button type="submit" class="btn btn-primary">CSVダウンロード</button>
+            </form>
+        </div>
     </div>
-    <div class="card-body">
+    <div class="preview-content">
         <div class="table-container">
             <table class="table table-hover mb-0">
                 <thead>

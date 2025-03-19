@@ -85,29 +85,38 @@ body {
 
 /* Preview page specific styles */
 .preview-card {
-    height: calc(100vh - 200px);
+    height: 90vh; /* ビューポートの90%の高さで固定 */
+    background: white;
+    border-radius: .25rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
     display: flex;
     flex-direction: column;
-    margin-bottom: 1.5rem;
 }
 
-.preview-card .card-body {
-    flex: 1;
-    padding: 0;
-    overflow: hidden;
-}
-
-/* テーブルのスタイル */
-.table-container {
-    height: 100%;
-    overflow-y: auto;
-    border: 1px solid #dee2e6;
-    border-radius: .25rem;
+.preview-header {
+    padding: 1.25rem 1.5rem;
     background: white;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.preview-content {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.table-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
 }
 
 .table {
     margin-bottom: 0;
+    background: white;
 }
 
 .table thead {
