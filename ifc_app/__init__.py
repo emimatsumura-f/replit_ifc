@@ -2,7 +2,7 @@ import os
 import logging
 from flask import Flask, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from config import Config
 
 # ログ設定
@@ -40,6 +40,8 @@ def create_app(config_class=Config):
     # ルートURLのリダイレクト処理
     @app.route('/')
     def index():
+        if current_user.is_authenticated:
+            return redirect(url_for('ifc.index'))
         return redirect(url_for('auth.login'))
 
     with app.app_context():

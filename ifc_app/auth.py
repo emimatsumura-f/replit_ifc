@@ -33,6 +33,7 @@ def login():
         login_user(user)
         logger.debug(f"Successful login for user: {user.username}")
         flash('ログインしました', 'success')
+        # ログイン後はifc.indexにリダイレクト
         return redirect(url_for('ifc.index'))
 
     return render_template('auth/login.html', form=form)
