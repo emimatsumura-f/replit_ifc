@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">IFCファイルのアップロード</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('ifc.upload_file') }}" method="post" enctype="multipart/form-data" id="uploadForm">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">IFCファイルを選択してください</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".ifc" required>
+                        <div class="form-text">
+                            ファイルサイズの制限: 100MB以下
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" id="uploadBtn">
+                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            アップロードして解析
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4 class="mb-0">最近の解析履歴</h4>
+            </div>
+            <div class="card-body">
+                {% if uploads %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ファイル名</th>
+                                <th>処理日時</th>
+                                <th>要素数</th>
+                                <th>アクション</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for upload in uploads[:5] %}
+                            <tr>
+                                <td>{{ upload.filename }}</td>
+                                <td>{{ upload.processed_date.strftime('%Y年%m月%d日 %H:%M') }}</td>
+                                <td>{{ upload.element_count }}</td>
+                                <td>
+                                    <a href="{{ url_for('ifc.preview', upload_id=upload.id) }}" class="btn btn-sm btn-outline-primary">
+                                        プレビュー
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% if uploads|length > 5 %}
+                <div class="text-end mt-3">
+                    <a href="{{ url_for('ifc.history') }}" class="btn btn-link">すべての履歴を表示</a>
+                </div>
+                {% endif %}
+                {% else %}
+                <div class="alert alert-info mb-0">
+                    まだファイルが処理されていません。
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
