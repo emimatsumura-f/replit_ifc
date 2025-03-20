@@ -20,12 +20,7 @@ def allowed_file(filename):
 @bp.route('/')
 @login_required
 def index():
-    # 最近の解析履歴を取得（新しい順に5件）
-    uploads = UploadHistory.query.filter_by(user_id=current_user.id)\
-        .order_by(UploadHistory.processed_date.desc())\
-        .limit(5)\
-        .all()
-    return render_template('ifc/index.html', uploads=uploads)
+    return render_template('ifc/index.html')
 
 @bp.route('/upload', methods=['POST'])
 @login_required
